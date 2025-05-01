@@ -11,18 +11,11 @@ for turn in range(k):
         return p[x]
     def U(a,b):
         a,b = F(a),F(b)
-        if a<b:
-            p[b] = a
-        else:
-            p[a] = b
+        if a<b:p[b] = a
+        else:p[a] = b
     cost = 0
     for c,a,b in edges:
-        if F(a) != F(b):
-            U(a,b)
-            cost += c
-    if len(set([F(i) for i in range(1,n+1)])) != 1:
-        cost = 0
-    if edges:
-        edges.pop(0)
-    ans.append(cost)
-print(*ans)
+        if F(a) != F(b):U(a,b);cost += c
+    if len(set([F(i) for i in range(1,n+1)])) != 1:cost = 0
+    edges.pop(0)
+    print(cost,end=' ')
