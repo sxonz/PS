@@ -1,19 +1,6 @@
-testcase = int(input())
-for test in range(testcase):
-    n = input()
-    if set(n) == set("5"):
-        print(0,5)
-        continue
-    if set(n) == set("1") and len(n) > 3:
-        print(len(n)%2,11)
-        continue
-    mod = 0
-    for i in n:
-        mod += int(i)
-    mod %= 3
-    if mod == 0:
-        print(0,3)
-    elif mod == 1:
-        print(n.find("1")+1,3)
-    else:
-        print(n.find("5")+1,3)
+I,P=input,print
+for t in range(int(I())):
+ n=I()
+ if"1"not in n:P(0,5);continue
+ if"5"not in n and(m:=len(n))>3:P(m%2,11);continue
+ mod=sum(int(i) for i in n)%3;P(n.find(str(mod+(mod==2)*3))+1,3)
