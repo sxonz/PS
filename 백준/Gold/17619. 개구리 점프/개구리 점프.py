@@ -1,3 +1,5 @@
+import sys
+input = sys.stdin.readline
 n,q = map(int,input().split())
 d = []
 for i in range(n):
@@ -15,9 +17,11 @@ def U(a,b):
         parents[b] = a
     else:
         parents[a] = b
+last = d[0][1]
 for i in range(1,n):
-    if d[i][0] <= d[i-1][1]:
+    if d[i][0] <= last:
         U(d[i-1][2],d[i][2])
+    last = max(last,d[i][1])
     
 for i in range(q):
     a,b = map(int,input().split())
