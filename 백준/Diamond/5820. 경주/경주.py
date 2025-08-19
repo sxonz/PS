@@ -1,76 +1,79 @@
+INF = int(1e15)
+
 import sys
-sys.setrecursionlimit(300000)
+sys.setrecursionlimit(30000)
+input = sys.stdin.readline
 
-N, K = map(int, input().split())
+n,k = map(int,input().split())
+d = [[] for i in range(n)]
 
-d = [[] for i in range(N)]
-for _ in range(N-1):
-    u, v, w = map(int, input().split())
-    d[u].append((v, w))
-    d[v].append((u, w))
+for i in range(n-1):
+    a,b,c = map(int,input().split())
+    d[a].append((b,c))
+    d[b].append((a,c))
 
-vis = [False] * N
-sub_sz = [0] * N
-min_depth = [float('inf')] * (K + 1)
-cur_tree = []
+mindepth = [INF]*(k+1)
+centroids = [False]*n
+subsize = [0]*n
+curtree = []
 
-def get_size(cur, par):
-    sub_sz[cur] = 1
-    for v, w in d[cur]:
-        if v == par or vis[v]:
+def dfs(cur,par):
+    subsize[cur] = 1
+    for x,cost in d[cur]:
+        if x == par or centroids[x]:
             continue
-        sub_sz[cur] += get_size(v, cur)
-    return sub_sz[cur]
+        subsize[cur] += dfs(x,cur)
+    return subsize[cur]
 
-def get_cent(cur, par, thr):
-    for v,w in d[cur]:
-        if v == par or vis[v]:
+def Centroid(cur,par,half):
+    for x,cost in d[cur]:
+        if x == par or centroids[x]:
             continue
-        if sub_sz[v] > thr:
-            return get_cent(v, cur, thr)
+        if subsize[x] > half:
+            return Centroid(x,cur,half)
     return cur
 
-def solve_path(cur, par, dist, depth):
-    if dist > K:
-        return float('inf')
-    ret = min_depth[K - dist] + depth
-    for v, w in d[cur]:
-        if v == par or vis[v]:
+def solve(cur,par,dist,depth):
+    md = INF
+    if dist > k:
+        return INF
+    for x,cost in d[cur]:
+        if x == par or centroids[x]:
             continue
-        ret = min(ret, solve_path(v, cur, dist + w, depth + 1))
-    return ret
+        md = min(md,solve(x,cur,dist+cost,depth+1))
+    return min(md,mindepth[k-dist] + depth)
 
-def update(cur, par, dist, depth):
-    if dist > K:
+def update(cur,par,dist,depth):
+    if dist > k:
         return
-    min_depth[dist] = min(min_depth[dist], depth)
-    cur_tree.append(dist)
-    for v, w in d[cur]:
-        if v == par or vis[v]:
-            continue
-        update(v, cur, dist + w, depth + 1)
+    curtree.append(dist)
+    for x,cost in d[cur]:
+        if x == par or centroids[x]:
+           continue
+        update(x,cur,dist+cost,depth+1)
+    mindepth[dist] = min(mindepth[dist],depth)
 
+res = INF
 def dnc(cur):
-    thr = get_size(cur, -1)
-    ct = get_cent(cur, -1, thr // 2)
-    vis[ct] = True
-    
-    ret = float('inf')
-    for c in cur_tree:
-        min_depth[c] = float('inf')
-    cur_tree.clear()
-    min_depth[0] = 0
-    
-    for v, w in d[ct]:
-        if not vis[v]:
-            ret = min(ret, solve_path(v, ct, w, 1))
-            update(v, ct, w, 1)
-    
-    for v, w in d[ct]:
-        if not vis[v]:
-            ret = min(ret, dnc(v))
-    
-    return ret
+    global curtree
+    global res
 
-ans = dnc(0)
-print(-1 if ans == float('inf') else ans)
+    size = dfs(cur,-1)
+    cent = Centroid(cur,-1,size//2)
+    centroids[cent] = True
+    for dist in curtree:
+        mindepth[dist] = INF
+
+    mindepth[0] = 0
+    curtree = []
+
+    for x,cost in d[cent]:
+        res = min(res,solve(x,cent,cost,1))
+        update(x,cent,cost,1)
+    
+    for x,cost in d[cent]:
+        if not centroids[x]:
+            dnc(x)
+
+dnc(0)
+print(res + (res == INF)*-(INF+1))
