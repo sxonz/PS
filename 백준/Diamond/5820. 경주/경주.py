@@ -1,76 +1,85 @@
 import sys
-sys.setrecursionlimit(300000)
+sys.setrecursionlimit(250000)
+input = sys.stdin.readline
 
-N, K = map(int, input().split())
+INF = int(1e15)
 
-d = [[] for i in range(N)]
-for _ in range(N-1):
-    u, v, w = map(int, input().split())
-    d[u].append((v, w))
-    d[v].append((u, w))
+n,k = map(int,input().split())
+d = [[] for _ in range(n)]
+for _ in range(n-1):
+    u,v,w = map(int,input().split())
+    d[u].append((v,w))
+    d[v].append((u,w))
 
-vis = [False] * N
-sub_sz = [0] * N
-min_depth = [float('inf')] * (K + 1)
-cur_tree = []
+subsize = [0]*n
+vis = [False]*n
 
-def get_size(cur, par):
-    sub_sz[cur] = 1
-    for v, w in d[cur]:
-        if v == par or vis[v]:
-            continue
-        sub_sz[cur] += get_size(v, cur)
-    return sub_sz[cur]
+mindepth = [INF]*(k+1)
+used = []
 
-def get_cent(cur, par, thr):
+ans = INF
+
+def dfs(cur,par):
+    subsize[cur] = 1
     for v,w in d[cur]:
         if v == par or vis[v]:
             continue
-        if sub_sz[v] > thr:
-            return get_cent(v, cur, thr)
+        subsize[cur]+=dfs(v,cur)
+    return subsize[cur]
+
+def centroid(cur,par,thr):
+    for v,w in d[cur]:
+        if v == par or vis[v]:
+            continue
+        if subsize[v] > thr//2:
+            return centroid(v,cur,thr)
     return cur
 
-def solve_path(cur, par, dist, depth):
-    if dist > K:
-        return float('inf')
-    ret = min_depth[K - dist] + depth
-    for v, w in d[cur]:
-        if v == par or vis[v]:
-            continue
-        ret = min(ret, solve_path(v, cur, dist + w, depth + 1))
-    return ret
+vec = []
+def collect(cur,par,dist,depth):
+    global ans
+    if dist>k or depth>=ans: return
+    vec.append((dist,depth))
+    for v,w in d[cur]:
+        if v!=par and not vis[v]:
+            collect(v,cur,dist+w,depth+1)
 
-def update(cur, par, dist, depth):
-    if dist > K:
-        return
-    min_depth[dist] = min(min_depth[dist], depth)
-    cur_tree.append(dist)
-    for v, w in d[cur]:
-        if v == par or vis[v]:
-            continue
-        update(v, cur, dist + w, depth + 1)
+def solve(root):
+    global ans
+    mindepth[0] = 0
+    used.append(0)
+
+    for v,w in d[root]:
+        if vis[v] or w>k: continue
+        vec.clear()
+        collect(v,root,w,1)
+
+        for dist,depth in vec:
+            need = k-dist
+            if 0<=need<=k and mindepth[need]<INF:
+                if depth+mindepth[need] < ans:
+                    ans = depth+mindepth[need]
+
+        for dist,depth in vec:
+            if dist<=k and depth<mindepth[dist]:
+                if mindepth[dist]==INF: used.append(dist)
+                mindepth[dist] = depth
+
+        if ans == 1:
+            break
+
+    for i in used:
+        mindepth[i] = INF
+    used.clear()
 
 def dnc(cur):
-    thr = get_size(cur, -1)
-    ct = get_cent(cur, -1, thr // 2)
+    dfs(cur,-1)
+    ct = centroid(cur,-1,subsize[cur])
+    solve(ct)
     vis[ct] = True
-    
-    ret = float('inf')
-    for c in cur_tree:
-        min_depth[c] = float('inf')
-    cur_tree.clear()
-    min_depth[0] = 0
-    
-    for v, w in d[ct]:
+    for v,w in d[ct]:
         if not vis[v]:
-            ret = min(ret, solve_path(v, ct, w, 1))
-            update(v, ct, w, 1)
-    
-    for v, w in d[ct]:
-        if not vis[v]:
-            ret = min(ret, dnc(v))
-    
-    return ret
+            dnc(v)
 
-ans = dnc(0)
-print(-1 if ans == float('inf') else ans)
+dnc(0)
+print(-1 if ans==INF else ans)
