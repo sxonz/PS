@@ -1,12 +1,8 @@
 n = int(input())
 a = list(map(int,input().split()))
 b = list(map(int,input().split()))
-
 idx = {j:i for i,j in enumerate(a)}
-d = []
-for i in b:
-    d.append(idx[i]+1)
-
+d = [idx[i]+1 for i in b]
 bstree = [0]*(n+1)
 
 def search(x):
