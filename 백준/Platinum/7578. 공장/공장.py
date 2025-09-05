@@ -1,6 +1,4 @@
-import sys
-
-n = int(sys.stdin.readline())
+n = int(input())
 a = list(map(int,input().split()))
 b = list(map(int,input().split()))
 idx = {j:i+1 for i,j in enumerate(a)}
@@ -19,8 +17,8 @@ def update(x):
         bstree[x] += 1
         x += x&-x
 
-r = 0
-for i in range(n):
-    r += i-search(d[i])
-    update(d[i])
+r = n*(n-1)//2
+for i in d:
+    r -= search(i)
+    update(i)
 print(r)
