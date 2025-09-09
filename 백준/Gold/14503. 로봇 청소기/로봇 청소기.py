@@ -1,11 +1,6 @@
 dx = (-1,0,1,0)
 dy = (0,1,0,-1)
 
-def rev(n):
-    return (n+2)%4
-def ccw(n):
-    return (n+3)%4
-
 n,m = map(int,input().split())
 r,c,dir = map(int,input().split())
 
@@ -17,18 +12,18 @@ for i in range(n):
             cleaned[i][j] = True
 
 cl = 0
-while True:
+while 1:
     if not cleaned[r][c]:
         cleaned[r][c] = True
         cl += 1
-    if [cleaned[r+1][c],cleaned[r][c+1],cleaned[r-1][c],cleaned[r][c-1]] == [1,1,1,1]:
-        if not d[r+dx[rev(dir)]][c+dy[rev(dir)]]:
-            r += dx[rev(dir)]
-            c += dy[rev(dir)]
+    if 0 not in[cleaned[r+1][c],cleaned[r][c+1],cleaned[r-1][c],cleaned[r][c-1]]:
+        if not d[r+dx[(dir+2)%4]][c+dy[(dir+2)%4]]:
+            r += dx[(dir+2)%4]
+            c += dy[(dir+2)%4]
             continue
         print(cl)
         break
-    dir = ccw(dir)
+    dir = (dir+3)%4
     if not cleaned[r+dx[dir]][c+dy[dir]]:
         r += dx[dir]
         c += dy[dir]
