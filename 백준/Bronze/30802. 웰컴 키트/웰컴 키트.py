@@ -1,0 +1,5 @@
+n = int(input())
+d = list(map(int,input().split()))
+t,p = map(int,input().split())
+print(sum([i//t + bool(i%t) for i in d]))
+print(*divmod(n,p))
