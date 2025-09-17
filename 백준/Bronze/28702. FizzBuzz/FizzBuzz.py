@@ -1,6 +1,6 @@
-d = [input() for i in range(3)]
 r = 0
-for i in d:
+for _ in (0,0,0):
+    i = input()
     if r:
         r += 1
     if i.isdigit():
