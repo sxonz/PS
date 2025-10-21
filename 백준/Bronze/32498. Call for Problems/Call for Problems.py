@@ -1,0 +1,1 @@
+print(sum([i%2 for i in [int(input()) for i in range(int(input()))]]))
