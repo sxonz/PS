@@ -2,8 +2,7 @@ import sys
 input = sys.stdin.readline
 
 n = int(input())
-psum = [[0]+list(map(int,input().split())) for i in range(n)]
-psum = [[0]*(n+1)] + psum
+psum = [[0]*(n+1)] + [[0]+list(map(int,input().split())) for i in range(n)]
 
 for i in range(n):
     for j in range(n):
