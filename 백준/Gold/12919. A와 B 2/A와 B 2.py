@@ -2,13 +2,13 @@ a,b = input(),input()
 
 def find(s):
     if s == a:
-        return 1
+        print(1)
+        exit()
     if not s:
-        return 0
-    r = 0
+        return
     if s[-1] == "A":
-        r |= find(s[:-1])
+        find(s[:-1])
     if s[0] == "B":
-        r |= find(s[-1:0:-1])
-    return r
-print(find(b))
+        find(s[-1:0:-1])
+find(b)
+print(0)
