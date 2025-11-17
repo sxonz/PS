@@ -48,9 +48,6 @@ while True:
         for j in range(n):
             if not visited[i][j]:
                 dfs(i,j)
-    
-    for i in range(n):
-        for j in range(n):
             d[i][j] = population[find(group[i][j])] // border[find(group[i][j])]
     if flag:
         break
