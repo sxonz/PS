@@ -1,50 +1,34 @@
-from collections import deque
-
-n,m = map(int,input().split())
-d = [[]]
-for i in range(n):
-    t,*r = map(int,input().split())
-    d.append(r)
-
+I=lambda:map(int,input().split())
+n,m = I()
+R = range(1,n+1)
+d = [[]]+[list(I())[1:] for i in R]
 
 connected = [0]*(m+1)
-def dfs(x):
+def dfs(x,visited):
     if visited[x]:
-        return False
-    visited[x] = True
+        return 0
+    visited[x] = 1
     for nx in d[x]:
-        if not connected[nx] or dfs(connected[nx]):
-            connected[nx] = x
-            return True
-    
-    return False
+        if not connected[nx] or dfs(connected[nx],visited):
+            connected[nx] = x 
+            return 1
+    return 0
 
-ans = 0
-for i in range(1,n+1):
-    visited = [False]*(n+1)
-    ans += dfs(i)
+print(sum([dfs(i,[0]*(n+1)) for i in R]))
 
-a = set(range(1,n+1)) - set(connected)
+X = [set(),set()]
+stack= [[i,1] for i in R if i not in connected]
+while stack:
+    x,cur = stack.pop()
+    if cur and x not in X[0]:
+        X[0].add(x)
+        stack += [(nx,0)for nx in d[x]]
+    elif((x in X[1])^1) and cur^1:
+        X[1].add(x)
+        stack.append((connected[x],1))
 
-ax = set()
-bx = set()
-queue = deque([[i,1] for i in a])
-visb = [False]*(m+1)
-while queue:
-    x,cur = queue.popleft()
-    if cur:
-        ax.add(x)
-        for nx in d[x]:
-            if not visb[nx]:
-                visb[nx] = True
-                queue.append((nx,0))
-    else:
-        if x not in bx:
-            bx.add(x)   
-            queue.append((connected[x],1))
+ra = set([connected[i] for i in range(1,m+1) if connected[i]])-X[0]
+rb = set([i for i in range(1,m+1) if connected[i]])&X[1]
 
-ra = set([connected[i] for i in range(1,m+1) if connected[i]])-ax
-rb = set([i for i in range(1,m+1) if connected[i]])&bx
-print(ans)
 print(len(ra),*ra)
 print(len(rb),*rb)
