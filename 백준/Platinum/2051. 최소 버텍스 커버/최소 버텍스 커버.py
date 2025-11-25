@@ -29,7 +29,6 @@ a = set(range(1,n+1)) - set(connected)
 ax = set()
 bx = set()
 queue = deque([[i,1] for i in a])
-visa = [False]*(n+1)
 visb = [False]*(m+1)
 while queue:
     x,cur = queue.popleft()
@@ -40,9 +39,8 @@ while queue:
                 visb[nx] = True
                 queue.append((nx,0))
     else:
-        bx.add(x)
-        if not visa[connected[x]]:
-            visa[connected[x]] = True
+        if x not in bx:
+            bx.add(x)   
             queue.append((connected[x],1))
 
 ra = set([connected[i] for i in range(1,m+1) if connected[i]])-ax
