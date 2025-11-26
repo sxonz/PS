@@ -31,16 +31,16 @@ for wi in range(w):
                                                 tomato.append((wi,vi,ui,ti,si,ri,qi,pi,oi,ni,i,0))
                                             elif tmp[i] == 0:
                                                 cnt += 1
-                                        od.append(tmp)
-                                    pd.append(od)
-                                qd.append(pd)
-                            rd.append(qd)
-                        sd.append(rd)
-                    td.append(sd)
-                ud.append(td)
-            vd.append(ud)
-        wd.append(vd)
-    d.append(wd)
+                                        od += [tmp]
+                                    pd += [od]
+                                qd += [pd]
+                            rd += [qd]
+                        sd += [rd]
+                    td += [sd]
+                ud += [td]
+            vd += [ud]
+        wd += [vd]
+    d += [wd]
 
 dw = [ 1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 dv = [ 0, 0, 1,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
