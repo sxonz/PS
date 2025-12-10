@@ -8,5 +8,5 @@ for t in range(int(input())):
     else:
         tmp = x//2+1
     if tmp > y:
-        tmp = 1
+        tmp = y
     print(x,tmp)
