@@ -1,0 +1,6 @@
+n,m = map(int,input().split())
+a = list(map(int,input().split()))
+b = list(map(int,input().split()))
+a.sort(reverse=True)
+b.sort(reverse=True)
+print(min(n,m),sum([i*j for i,j in zip(a[:min(n,m)], b[:min(n,m)])]))
