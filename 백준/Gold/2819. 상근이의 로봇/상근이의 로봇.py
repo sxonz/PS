@@ -1,3 +1,12 @@
+# n = int(input())
+# t = list(map(int,input().split()))
+# b = list(map(int,input().split()))
+# c = list(map(int,input().split()))
+
+# dp = dict()
+# dp[t[0]] = 
+# for i in range(0,n):
+#     pass
 import sys
 input = sys.stdin.readline
 
@@ -5,25 +14,19 @@ MAX = 2000002
 OF = 1000000
 n,m = map(int,input().split())
 
-xs = []
-ys = []
 xcnt = [0]*MAX
 ycnt = [0]*MAX
+xdist = [0]*MAX
+ydist = [0]*MAX
+xdist[0] = OF*n
+ydist[0] = OF*n
 
 for i in range(n):
     a,b = map(int,input().split())
-    xs.append(a)
-    ys.append(b)
+    xdist[0] += a
+    ydist[0] += b
     xcnt[a+OF] += 1
     ycnt[b+OF] += 1
-    
-xs.sort()
-ys.sort()
-
-xdist = [0]*MAX
-ydist = [0]*MAX
-xdist[0] = sum([i+OF for i in xs])
-ydist[0] = sum([i+OF for i in ys])
 
 xm,ym = 0,0
 for i in range(1,MAX):
