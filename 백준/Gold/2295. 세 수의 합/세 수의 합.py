@@ -1,15 +1,18 @@
 import sys
 from bisect import *
 input = sys.stdin.readline
+
 n = int(input())
 d = [int(input()) for i in range(n)]
 d.sort()
 val = []
+for i in range(n):
+    for j in range(i,n):
+        val.append(d[i]+d[j])
+val.sort()
 ans = 0
 
 for i in range(n):
-    for j in range(i,n):
-        insort_right(val,d[i]+d[j])
     for k in range(i,n):
         idx = bisect_right(val,d[k]-d[i])
         if idx:
