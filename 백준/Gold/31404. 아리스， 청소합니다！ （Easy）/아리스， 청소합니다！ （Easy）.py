@@ -13,7 +13,6 @@ last = 0
 cur = 1
 while True:
     if r[x][y][dir]:
-        print(last)
         break
     if board[x][y]:
         board[x][y] = 0
@@ -29,8 +28,8 @@ while True:
     x += dx[dir]
     y += dy[dir]
     if not (0<=x<h and 0<=y<w):
-        print(last)
         break
     cur += 1
+print(last)
         
     
