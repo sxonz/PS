@@ -1,6 +1,6 @@
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(100000)
+sys.setrecursionlimit(250000)
 
 n,q = map(int,input().split())
 tmp = [0,0]+[int(input()) for i in range(n-1)]
