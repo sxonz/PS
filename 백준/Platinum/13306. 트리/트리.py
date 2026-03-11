@@ -1,9 +1,10 @@
 import sys
 input = sys.stdin.readline
+sys.setrecursionlimit(100000)
 
 n,q = map(int,input().split())
 tmp = [0,0]+[int(input()) for i in range(n-1)]
-par = list(range(n+2))
+par = list(range(n+1))
 def F(x):
     if x != par[x]:
         par[x] = F(par[x])
