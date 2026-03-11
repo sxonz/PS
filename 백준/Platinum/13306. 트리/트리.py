@@ -3,7 +3,7 @@ input = sys.stdin.readline
 
 n,q = map(int,input().split())
 tmp = [0,0]+[int(input()) for i in range(n-1)]
-par = list(range(n+1))
+par = list(range(n+2))
 def F(x):
     if x != par[x]:
         par[x] = F(par[x])
