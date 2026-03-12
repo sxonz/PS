@@ -32,10 +32,11 @@ for i in range(1,h+1):
     for j in range(i,h+1):
         tmp = [psum[j][k]-psum[i-1][k] for k in range(n) if s[j][k]-s[i-1][k]]
         l = len(tmp)
+        m = -int(1e9)
         for k in range(l):
             dp[k] = max(dp[k-1]+tmp[k], tmp[k])
-        if dp:
-            ans = max(ans,max(dp))
-            for k in range(l):
-                dp[k] = -int(1e9)
+            m = max(m,dp[k])
+        for k in range(l):
+            dp[k] = -int(1e9)
+        ans = max(ans,m)
 print(ans)
