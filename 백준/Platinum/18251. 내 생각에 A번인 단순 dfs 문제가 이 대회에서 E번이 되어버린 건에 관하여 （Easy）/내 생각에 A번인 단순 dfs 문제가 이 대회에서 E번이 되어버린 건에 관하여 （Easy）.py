@@ -27,13 +27,15 @@ for i in range(1,h+1):
         s[i][j] = s[i-1][j]+pos[i-1][j]
 
 ans = -int(1e9)
+dp = [-int(1e9)]*n
 for i in range(1,h+1):
     for j in range(i,h+1):
         tmp = [psum[j][k]-psum[i-1][k] for k in range(n) if s[j][k]-s[i-1][k]]
         l = len(tmp)
-        dp = [-int(1e9)]*l
         for k in range(l):
             dp[k] = max(dp[k-1]+tmp[k], tmp[k])
         if dp:
             ans = max(ans,max(dp))
+            for k in range(l):
+                dp[k] = -int(1e9)
 print(ans)
