@@ -3,14 +3,8 @@ d = list(map(int,input().split()))
 d.sort()
 ans = 0
 MOD = 1000000007
-def power(x):
-    if x <= 2:
-        return 2**x
-    elif x%2:
-        return power(x//2)*power(x//2)*2%MOD
-    else:
-        return power(x//2)*power(x//2)%MOD
+cur = 1
 for i in range(n):
-    ans = (ans+power(i)*d[i])%MOD
-    ans = (ans-power(n-i-1)*d[i])%MOD
+    ans = (ans+cur*d[i]-cur*d[n-i-1])%MOD
+    cur = (cur*2)%MOD
 print(ans)
