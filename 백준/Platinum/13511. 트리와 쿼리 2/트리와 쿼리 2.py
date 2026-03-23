@@ -1,111 +1,44 @@
 import sys
-sys.setrecursionlimit(100000)
-R,I = range,sys.stdin.readline
-S = lambda:map(int,I().split())
-log = 18
-L = R(log-1,-1,-1)
-
-node = int(I())
-d = [[] for _ in R(node+1)]
-for _ in R(node-1):
-    a,b,w =S()
-    d[a] += [(b,w)]
-    d[b] += [(a,w)]
-
-depth = [0]*(node+1)
-nodeparents = [[1]*(log+1) for _ in R(node+1)]
-nodedistance = [[0]*(log+1) for _ in R(node+1)]
-
-visited = [False]*(node+1)
-visited[1] = True
-def dfs(current,w):
-    for nextnode,cost in d[current]:
-        if not visited[nextnode]:
-            visited[nextnode] = True
-            depth[nextnode] = w+1
-            nodeparents[nextnode][0] = current
-            nodedistance[nextnode][0] = cost
-            dfs(nextnode,w+1)
-dfs(1,0)
-
-for k in R(1,log):
-    for i in R(1,node+1):
-        nodeparents[i][k] = nodeparents[nodeparents[i][k-1]][k-1]
-        nodedistance[i][k] = nodedistance[i][k-1] + nodedistance[nodeparents[i][k-1]][k-1]
-
-
-def lcanode(a,b):
-    if depth[a] > depth[b]:
-        a,b = b,a
-    for i in L:
-        if depth[b] - depth[a] >= 1<<i:
-            b = nodeparents[b][i]
-    if a == b:
-        return a
-    for i in L:
-        if (A:=nodeparents[a][i]) != (B:=nodeparents[b][i]):
-            a,b = A,B
-    return nodeparents[a][0]
-
-def lcadistance(a,b):
-    cost = 0
-    for k in L:
-        if depth[a] < depth[nodeparents[b][k]]:
-            cost += 1<<k
-            b = nodeparents[b][k]
-    return cost + (a!=b)
-
-def query(orderedquery):
-    querystyle = orderedquery[0]
-    values = orderedquery[1:]
-
-    if querystyle == 1:
-        resultdistance = 0
-        start,end = values[0],values[1]
-
-        if depth[start] > depth[end]:
-            start,end = end,start
-        
-        for currentlogvalue in L:
-            if depth[start] <= depth[nodeparents[end][currentlogvalue]]:
-                resultdistance += nodedistance[end][currentlogvalue]
-                end = nodeparents[end][currentlogvalue]
-        
-        if start == end:
-            return resultdistance
-        else:
-            for currentlogvalue in L:
-                if nodeparents[start][currentlogvalue] != nodeparents[end][currentlogvalue]:
-                    resultdistance += nodedistance[start][currentlogvalue]
-                    resultdistance += nodedistance[end][currentlogvalue]
-                    start = nodeparents[start][currentlogvalue]
-                    end = nodeparents[end][currentlogvalue]
-        return resultdistance + nodedistance[start][0] + nodedistance[end][0]
-    
-    else:
-        start,end,kthdist = values[0],values[1],values[2]
-        middlenode = lcanode(start,end)
-        lcadist = lcadistance(middlenode,start)
-
-        kthdist -= 1
-        if lcadist == kthdist:
-            return middlenode
-        
-        elif lcadist > kthdist:
-            for currentlogvalue in L:
-                if 1<<currentlogvalue <= kthdist:
-                    kthdist -= 1<<currentlogvalue
-                    start = nodeparents[start][currentlogvalue]
-            return start
-        
-        else:
-            kthdist -= lcadist
-            reverselcadist = lcadistance(middlenode,end) - kthdist
-            for currentlogvalue in L:
-                if 1<<currentlogvalue <= reverselcadist:
-                    reverselcadist -= 1<<currentlogvalue
-                    end = nodeparents[end][currentlogvalue]
-            return end
-
-for _ in R(int(I())):
-    print(query(list(S())))
+R,I=range,sys.stdin.readline;g=18;sys.setrecursionlimit(1<<g);L,n,S=R(g-1,-1,-1),int(I())+1,lambda:map(int,I().split());N=R(n);T,P,D,v,d=[0]*n,[[1]*(g+1) for _ in N],[[0]*(g+1) for _ in N],[0]*n,[[] for _ in N]
+for _ in R(n-2):a,b,w =S();d[a]+=[(b,w)];d[b]+=[(a,w)]
+v[1]=1
+def F(u,w):
+ for X,c in d[u]:
+  if v[X]==0:v[X]=1;T[X]=w+1;P[X][0]=u;D[X][0]=c;F(X,w+1)
+F(1,0)
+for k in R(1,g):
+ for i in R(n):P[i][k],D[i][k]=P[K:=P[i][k-1]][k-1],D[i][k-1]+D[K][k-1]
+def j(a,b):
+ if T[a]>T[b]:
+  a,b = b,a
+ for k in L:
+  if T[b]-T[a]>=1<<k:b=P[b][k]
+ if a == b:return a
+ for i in L:
+  if (A:=P[a][i])!=(B:=P[b][i]):a,b=A,B
+ return P[a][0]
+def C(a,b):
+ c=0
+ for k in L:
+  if T[b]-T[a]>=1<<k:c+=1<<k;b=P[b][k]
+ return c+(a!=b)
+def A(V):
+ s,e=V;r=0
+ if T[s]>T[e]:s,e=e,s
+ for k in L:
+  if T[e]-T[s]>=1<<k:r+=D[e][k];e=P[e][k]
+ if s==e:return r
+ for k in L:
+  if(X:=P[s][k])!=(Y:=P[e][k]):r+=D[s][k]+D[e][k];s,e=X,Y
+ return r+D[s][0]+D[e][0]
+def B(V):
+ s,e,h=V;m=j(s,e);A=C(m,s);h-=1
+ if A > h:
+  for k in L:
+   if 1<<k<=h:h-=1<<k;s=P[s][k]
+  return s
+ A+=C(m,e)-h
+ for k in L:
+  if 1<<k<=A:A-=1<<k;e=P[e][k]
+ return e
+for _ in R(int(I())):q,*Q=list(S());print(A(Q) if q==1 else B(Q))
