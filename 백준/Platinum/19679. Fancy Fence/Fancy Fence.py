@@ -6,8 +6,8 @@ d = list(map(list,zip(*d[::-1])))
 
 stack = []
 graph = [[-1,-1,-1] for i in range(n+1)]
-for idx,i in enumerate(d):
-    x,y = i
+for idx in range(n):
+    x,y = d[idx]
     flag = 0
     while stack and stack[-1] > (y,idx):
         tmp = stack.pop()
