@@ -1,11 +1,11 @@
 import sys
+sys.setrecursionlimit(100000)
 n = int(input())
 d = [tuple(map(int,input().split())) for i in range(2)]
 d = list(map(list,zip(*d[::-1])))
 
 stack = []
-graph = [[-1,-1] for i in range(n+1)]
-par = [-1]*n
+graph = [[-1,-1,-1] for i in range(n+1)]
 for idx,i in enumerate(d):
     x,y = i
     flag = 0
@@ -14,25 +14,25 @@ for idx,i in enumerate(d):
         flag = 1
     if flag:
         graph[idx][0] = tmp[1]
-        par[tmp[1]] = idx
+        graph[tmp[1]][2] = idx
     if stack:
         graph[stack[-1][1]][1] = idx
-        par[idx] = stack[-1][1]
+        graph[idx][2] = stack[-1][1]
     stack.append((y,idx))
 
 d += [[0,0]]
 root = 0
 for i in range(n):
-    if par[i] == -1:
+    if graph[i][2] == -1:
         root = i
-        par[i] = n
+        graph[i][2] = n
 
 w = [0]*n
 def dfs(x):
-    for nx in graph[x]:
-        if nx != -1:
-            dfs(nx)
-            w[x] += w[nx]
+    for i in range(2):
+        if graph[x][i] != -1:
+            dfs(graph[x][i])
+            w[x] += w[graph[x][i]]
     w[x] += d[x][0]
 dfs(root)
 
@@ -40,7 +40,7 @@ MOD = int(1e9)+7
 ans = 0
 for i in range(n):
     x = w[i]*(w[i]+1)//2
-    y = d[i][1]*(d[i][1]+1)//2-d[par[i]][1]*(d[par[i]][1]+1)//2
+    y = d[i][1]*(d[i][1]+1)//2-d[graph[i][2]][1]*(d[graph[i][2]][1]+1)//2
     ans = (ans+x*y)%MOD
 print(ans)
     
