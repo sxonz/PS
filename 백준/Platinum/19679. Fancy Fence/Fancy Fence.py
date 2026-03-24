@@ -1,5 +1,4 @@
 import sys
-sys.setrecursionlimit(100000)
 n = int(input())
 d = [tuple(map(int,input().split())) for i in range(2)]
 d = list(map(list,zip(*d[::-1])))
