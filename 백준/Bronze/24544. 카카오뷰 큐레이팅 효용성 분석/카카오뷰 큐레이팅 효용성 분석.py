@@ -1,0 +1,5 @@
+n = int(input())
+a = list(map(int,input().split()))
+b = list(map(int,input().split()))
+print(sum(a))
+print(sum([i*(j^1) for i,j in zip(a,b)]))
