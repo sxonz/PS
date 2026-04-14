@@ -8,19 +8,19 @@ def gcd(n, m, T):
     if T:q.appendleft(n // m)
     return gcd(m, n % m,T)
 
-P = True
+P = 1
 
 if not a+b:
-    if s: P = False
+    if s: P = 0
 elif not a:
-    if s % b:P = False
+    if s % b:P = 0
 elif not b:
     if s % a:
-        P = False
+        P = 0
 else:
     g = gcd(a, b,True)
     if s % g != 0:
-        P = False
+        P = 0
     else:
         x, y = 1, 0
         for div in q:
@@ -44,6 +44,6 @@ else:
         while y > 0:
             if gcd(x,y,False)==1:break
             x += divx;y -= divy
-        else:P = False
+        else:P = 0
 res='YES'if P or a==s or b==s else'NO'
 print(res)
