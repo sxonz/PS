@@ -37,12 +37,12 @@ def centroid(cur,par,thr):
 
 vec = []
 def collect(cur,par,dist,depth):
-    global ans
     if dist>k or depth>=ans: return
     vec.append((dist,depth))
     for v,w in d[cur]:
-        if v!=par and not vis[v]:
-            collect(v,cur,dist+w,depth+1)
+        if v==par or vis[v]:
+            continue
+        collect(v,cur,dist+w,depth+1)
 
 def solve(root):
     global ans
