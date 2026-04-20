@@ -22,7 +22,7 @@ for c in range(n*n-1):
         nx,ny = cx+dx[i],cy+dy[i]
         if 0<=nx<n and 0<=ny<n:
             if not visited[nx][ny]:
-                tmp.append((check(nx,ny),dist(nx,ny),nx,ny))
+                tmp.append((check(nx,ny),-dist(nx,ny),nx,ny))
     if not tmp:
         break
     cx,cy = min(tmp)[2:]
@@ -32,5 +32,5 @@ for c in range(n*n-1):
 if len(r) == n*n:
     for i in r:
         print(*i)
-    exit()
-print(-1,-1)
+else:
+    print(-1,-1)
