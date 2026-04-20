@@ -3,15 +3,15 @@ dx = (-2,-2,-1,1,2,2,1,-1)
 dy = (-1,1,2,2,1,-1,-2,-2)
 n = int(input())
 x,y = map(int,input().split())
-for i in range(100):
+for i in range(10):
     cx,cy = x-1,y-1
-    r = [(cx,cy)]
+    r = [(cx+1,cy+1)]
     visited = [[0]*n for i in range(n)]
     visited[cx][cy] = 1
     def check(x,y):
         res = 0
         for i in range(8):
-            nx,ny = cx+dx[i],cy+dy[i]
+            nx,ny = x+dx[i],y+dy[i]
             if 0<=nx<n and 0<=ny<n:
                 if not visited[nx][ny]:
                     res += 1
@@ -36,5 +36,5 @@ for i in range(100):
     if len(r) == n*n:
         for i in r:
             print(*i)
-            exit()
+        exit()
 print(-1,-1)
