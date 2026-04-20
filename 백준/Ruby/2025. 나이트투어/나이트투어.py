@@ -1,4 +1,3 @@
-from random import *
 dx = (-2,-2,-1,1,2,2,1,-1)
 dy = (-1,1,2,2,1,-1,-2,-2)
 n = int(input())
@@ -16,20 +15,18 @@ for i in range(10):
                 if not visited[nx][ny]:
                     res += 1
         return res
+    def dist(x,y):
+        return (n/2-x)**2+(n/2-y)**2
     for c in range(n*n-1):
         tmp = []
         for i in range(8):
             nx,ny = cx+dx[i],cy+dy[i]
             if 0<=nx<n and 0<=ny<n:
                 if not visited[nx][ny]:
-                    if tmp and check(nx,ny) < tmp[0][0]:
-                        tmp.clear()
-                        tmp.append((check(nx,ny),nx,ny))
-                    elif not tmp or check(nx,ny) == tmp[0][0]:
-                        tmp.append((check(nx,ny),nx,ny))
+                    tmp.append((check(nx,ny),dist(nx,ny),nx,ny))
         if not tmp:
             break
-        cx,cy = tmp[randrange(len(tmp))][1:]
+        cx,cy = min(tmp)[2:]
         visited[cx][cy] = 1
         r.append((cx+1,cy+1))
 
