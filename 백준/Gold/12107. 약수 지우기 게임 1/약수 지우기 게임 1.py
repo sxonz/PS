@@ -1,0 +1,1 @@
+print('AB'[int(int(input())==1)])
