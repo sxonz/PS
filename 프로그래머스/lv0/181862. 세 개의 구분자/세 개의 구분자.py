@@ -1,0 +1,2 @@
+def solution(myStr):
+    return ["EMPTY"] if myStr.count("a") + myStr.count("b") + myStr.count("c") == len(myStr) else [i for i in myStr.replace('a',' ').replace('b',' ').replace('c',' ').split(' ') if i != ""]
